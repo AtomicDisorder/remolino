@@ -22,6 +22,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/remolino-commons"/>
+	<classpathentry kind="lib" path="H:/0_Backups/GoogleDrive/0_AtomicDisorder/0_Remolino/remolino_trunk/remolino-commons/lib/jcl.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
