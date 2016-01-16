@@ -72,7 +72,7 @@ public abstract class StringFilterAbstract implements StringFilter, Comparable<S
 	}
 
 	public boolean apply(String stringMessage) {
-		System.out.println("APPLYING " + stringMessage);
+		//System.out.println("APPLYING " + stringMessage);
 	/*	if (!rawMessage.getSourceModule().equals(getSourceModule())) {
 			return false;
 		}*/
@@ -82,6 +82,7 @@ public abstract class StringFilterAbstract implements StringFilter, Comparable<S
 				StringFilterResult newMessageObject = CreateNewMessageObjectClass(this.getFilterCanonicalName()+ "Result", stringMessage);
 				//*if (modulesListeners != null && newMessageObject != null) {
 					for (StringFilterObserver observer : getObservers()) {
+						
 						observer.notify(newMessageObject);
 					}
 			//	}

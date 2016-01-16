@@ -45,7 +45,7 @@ public class JAXBProvider {
 		} catch (JAXBException e) {
 			logger.info("marshalClassToFile: Error saving module "
 					+ objectToMarshal.getClass().getClass().getCanonicalName());
-			System.out.println("marshalClassToFile: Error saving module "
+			logger.warn("marshalClassToFile: Error saving module "
 					+ objectToMarshal.getClass().getClass().getCanonicalName());
 			e.printStackTrace();
 		}
@@ -67,7 +67,7 @@ public class JAXBProvider {
 				return jaxbUnmarshaller.unmarshal(file);
 
 			} catch (JAXBException JAXBException) {
-				System.out.println("UNNACEPTABLE ERROR UNMARSHALING " + file.getAbsolutePath());
+				logger.warn("UNNACEPTABLE ERROR UNMARSHALING " + file.getAbsolutePath());
 				JAXBException.printStackTrace();
 				System.exit(3);
 				return null;
@@ -100,6 +100,7 @@ public class JAXBProvider {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		logger.warn("createNewInstance system exit 3");
 		System.exit(3);
 		return null;
 

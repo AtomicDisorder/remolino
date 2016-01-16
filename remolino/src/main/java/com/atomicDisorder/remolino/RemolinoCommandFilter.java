@@ -21,9 +21,9 @@ public class RemolinoCommandFilter extends StringFilterAbstract {
 	
 	
 	private RemolinoCommandFilter() {
-		super.setProcessThisMessages(false);
-		super.setExampleMatch("consoleCommand:rm shutdown");
-		super.setRegexMatch("consoleCommand:rm .*");
+		super.setProcessThisMessages(true);
+		super.setExampleMatch("console-command:rm shutdown");
+		super.setRegexMatch("console-command:rm .*");
 	}
 
 

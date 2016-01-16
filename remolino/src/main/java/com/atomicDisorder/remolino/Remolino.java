@@ -15,78 +15,126 @@ import com.atomicDisorder.remolino.commons.filters.StringFilter;
 import com.atomicDisorder.remolino.commons.filters.StringFilterObserver;
 import com.atomicDisorder.remolino.commons.filters.StringFilterResult;
 import com.atomicDisorder.remolino.commons.messages.StringHub;
+import com.atomicDisorder.remolino.commons.messages.StringHubClient;
 import com.atomicDisorder.remolino.commons.modules.Module;
 import com.atomicDisorder.remolino.commons.modules.ModuleConfiguration;
 import com.atomicDisorder.remolino.commons.persistance.JAXBProvider;
 import com.atomicDisorder.remolino.commons.utils.Configurations;
 import com.atomicDisorder.remolino.commons.utils.Reflexion;
 
-
 /**
  * @author Mariano Blua
  *
  */
-public class Remolino implements StringFilterObserver{
+public class Remolino implements StringFilterObserver {
 
 	private static Configurations configurations;
 	private static HashMap<String, Module> modules;
 	private static Logger logger = Logger.getLogger(Remolino.class.getName());
 	private static Remolino instance;
 
-	private Remolino()
-	{
-		
+	private Remolino() {
 
 		JAXBProvider.marshalClassToFile(Remolino.getConfigurations(), "Remolino.Configurations.xml");
-		
-		//Load /Create StringHubs
-		//Deberían ser multiples y creables desde la configuracion.
+
+		// Load /Create StringHubs
+		// Deberían ser multiples y creables desde la configuracion.
 		StringHub mainStringHub = new com.atomicDisorder.remolino.messages.stringHub.StringHub("main");
 
-		
-		
-		
-		
 		// List and Create all modulesConfigurations
-		logger.debug("*** Loading Configured Modules ***");
+		logger.info("*** Loading Configured Modules ***");
 		for (Entry<String, ModuleConfiguration> element : getConfigurations().getModulesConfiguration().entrySet()) {
-			logger.debug("* Loading " + element.getKey() + " Module. Type: " + element.getValue().getModuleType());
+			logger.info("* Loading " + element.getKey() + " Module. Type: " + element.getValue().getModuleType());
 			Module newModuleInstance = Reflexion.getModuleInstance(element.getValue());
 			newModuleInstance.setStringHub(mainStringHub);
 			if (newModuleInstance != null) {
 				getModules().put(element.getKey(), newModuleInstance);
-				logger.debug("Correctly added.");
+				logger.info("Correctly added.");
 			}
 
 		}
-
-		// List and Create all modulesConfigurations
-		logger.debug("*** Running all runnables modules ***");
+		
+		// Init all modules
+		logger.info("*** Init all modules ***");
 		for (Entry<String, Module> element : getModules().entrySet()) {
 			Module currentModule = element.getValue();
-			if (currentModule instanceof Runnable)
-			{
-				currentModule.setModuleThread(new Thread((Runnable)currentModule));
-				currentModule.getModuleThread().start();
-			}
+			currentModule.initModule();
+			logger.info(currentModule.getClass().getCanonicalName() + " -> Init module");	
 		}
 		
-		//Add Remolino basic Filters to mainhub
+		
+
+		// List and Create all modulesConfigurations
+/*		logger.info("*** Running all runnables modules ***");
+		for (Entry<String, Module> element : getModules().entrySet()) {
+			Module currentModule = element.getValue();
+			if (currentModule instanceof Runnable) {
+				currentModule.setModuleThread(new Thread((Runnable) currentModule));
+				logger.info(currentModule.getClass().getCanonicalName() + " -> Starting with thread id: "
+						+ currentModule.getModuleThread().getId());
+				currentModule.getModuleThread().start();
+
+			}
+		}*/
+
+		// Add Remolino basic Filters to mainhub
 		mainStringHub.addStringFilter(RemolinoCommandFilter.getInstance());
 		RemolinoCommandFilter.getInstance().addObserver(this);
+
+		// Starting all Hubs
 		
-		//Starting all Hubs
-		mainStringHub.setThread(new Thread((Runnable)mainStringHub));
-		mainStringHub.getThread().start();
-		//mainStringHub.(new Thread((Runnable)currentModule));
-		//mainStringHub.getModuleThread().start();
-	}
-	
-	public static Remolino getInstance()
-	{
-		if (instance==null)
+	/*	mainStringHub.setThread(new Thread((Runnable) mainStringHub));
+		mainStringHub.getThread().start();*/
+		
+		logger.info("*** Initialized ***");
+		while (true)
 		{
-			instance=new Remolino();
+			//System.out.println("EJECUTANDO");
+			for (Entry<String, Module> element : getModules().entrySet()) {
+				
+				Module currentModule = element.getValue();
+			//	System.out.println("EJECUTANDO " + currentModule.getName());
+				currentModule.execute();
+				
+			}
+			//System.out.println("EJECUTANDO2");
+			mainStringHub.execute();
+		//	System.out.println("EJECUTANDO3");
+		}
+		// mainStringHub.(new Thread((Runnable)currentModule));
+		// mainStringHub.getModuleThread().start();
+	}
+
+	private void shutdownModules() {
+		// List and Create all modulesConfigurations
+		logger.info("*** Shutting down all runnables modules ***");
+		for (Entry<String, Module> element : getModules().entrySet()) {
+			Module currentModule = element.getValue();
+			if (currentModule instanceof Runnable) {
+				currentModule.getModuleThread().interrupt();
+				logger.info(currentModule.getClass().getCanonicalName() + " -> Thread interrupted "
+						+ currentModule.getModuleThread().getId());
+			}
+		}
+		logger.info("* All modules shutted down");
+	}
+
+	private void saveModules() {
+		// List and Create all modulesConfigurations
+		logger.info("*** Saving all modules ***");
+		for (Entry<String, Module> element : getModules().entrySet()) {
+			Module currentModule = element.getValue();
+
+			currentModule.saveModuleData();
+			logger.info(currentModule.getClass().getCanonicalName() + " -> Data saved");
+
+		}
+		logger.info("* All modules saved");
+	}
+
+	public static Remolino getInstance() {
+		if (instance == null) {
+			instance = new Remolino();
 		}
 		return instance;
 	}
@@ -99,10 +147,14 @@ public class Remolino implements StringFilterObserver{
 		// defaultProperties.put("properties.path", ".//properties");
 		defaultProperties.put("main.path", ".//");
 
-	/*	defaultProperties.put("default.controller.name", "remolino-controller");
-		defaultProperties.put("default.controller.jar", "remolino-controller.jar");
-		defaultProperties.put("default.controller.pathToMainClass",
-				"com.atomicDisorder.remolino.modules.controller.Controller");*/
+		/*
+		 * defaultProperties.put("default.controller.name",
+		 * "remolino-controller");
+		 * defaultProperties.put("default.controller.jar",
+		 * "remolino-controller.jar");
+		 * defaultProperties.put("default.controller.pathToMainClass",
+		 * "com.atomicDisorder.remolino.modules.controller.Controller");
+		 */
 
 		defaultProperties.put("default.console.name", "remolino-console");
 		defaultProperties.put("default.console.jar", "remolino-console.jar");
@@ -123,22 +175,25 @@ public class Remolino implements StringFilterObserver{
 
 	private static void loadDefaultModules() {
 		boolean defaultAdded = false;
-	/*	String defaultControllerName = configurations.getParameters().getProperty("default.controller.name");
-		ModuleConfiguration defaultControllerConfiguration = getConfigurations().getModulesConfiguration()
-				.get(defaultControllerName);
-		if (defaultControllerConfiguration == null) {
-			defaultControllerConfiguration = new ModuleConfiguration();
-			defaultControllerConfiguration.setName(defaultControllerName);
-			defaultControllerConfiguration.setModuleType(ModuleConfiguration.ModuleTypes.Controller);
-			defaultControllerConfiguration
-					.setCompletePathToJar(configurations.getParameters().getProperty("default.controller.jar"));
-			defaultControllerConfiguration.setCompletePathToMainClass(
-					 getConfigurations().getParameters().getProperty("default.controller.pathToMainClass"));
-			configurations.getModulesConfiguration().put(defaultControllerName, defaultControllerConfiguration);
-			defaultAdded = true;
-		}
-*/
-		String defaultConsoleName =  getConfigurations().getParameters().getProperty("default.console.name");
+		/*
+		 * String defaultControllerName =
+		 * configurations.getParameters().getProperty("default.controller.name")
+		 * ; ModuleConfiguration defaultControllerConfiguration =
+		 * getConfigurations().getModulesConfiguration()
+		 * .get(defaultControllerName); if (defaultControllerConfiguration ==
+		 * null) { defaultControllerConfiguration = new ModuleConfiguration();
+		 * defaultControllerConfiguration.setName(defaultControllerName);
+		 * defaultControllerConfiguration.setModuleType(ModuleConfiguration.
+		 * ModuleTypes.Controller); defaultControllerConfiguration
+		 * .setCompletePathToJar(configurations.getParameters().getProperty(
+		 * "default.controller.jar"));
+		 * defaultControllerConfiguration.setCompletePathToMainClass(
+		 * getConfigurations().getParameters().getProperty(
+		 * "default.controller.pathToMainClass"));
+		 * configurations.getModulesConfiguration().put(defaultControllerName,
+		 * defaultControllerConfiguration); defaultAdded = true; }
+		 */
+		String defaultConsoleName = getConfigurations().getParameters().getProperty("default.console.name");
 		ModuleConfiguration defaultConsoleConfiguration = configurations.getModulesConfiguration()
 				.get(defaultConsoleName);
 		if (defaultConsoleConfiguration == null) {
@@ -194,7 +249,7 @@ public class Remolino implements StringFilterObserver{
 	private static void setModules(HashMap<String, Module> modules) {
 		Remolino.modules = modules;
 	}
-	
+
 	public static boolean saveAllModulesData() {
 		logger.info("******* Saving Modules *******");
 		java.util.Iterator<Entry<String, Module>> iterator = getModules().entrySet().iterator();
@@ -205,15 +260,36 @@ public class Remolino implements StringFilterObserver{
 			logger.info("** " + module.getName() + " saved.");
 
 		}
-		JAXBProvider.marshalClassToFile( getConfigurations().getModulesConfiguration(), "ModulesController");
+		JAXBProvider.marshalClassToFile(getConfigurations().getModulesConfiguration(), "ModulesController");
 		return true;
 	}
 
 	@Override
 	public void notify(StringFilterResult stringFilterResult) {
-		System.out.println("1 ME NOTIFICARON DE " +  stringFilterResult.getRawStringMessage());
-		System.out.println("2 ME NOTIFICARON DE " +  stringFilterResult.getFilterResultCanonicalClassName());
+		logger.info("*** notify ");
+		switch (stringFilterResult.getRawStringMessage().toLowerCase()) {
+		case "console-command:rm shutdown": {
+			logger.info("*** Remolino shutting down modules normally");
+			
+			shutdownModules();
+			logger.info("*** Remolino shutting down normally");
+			System.exit(0);
+			break;
+		}
+		case "console-command:rm save": {
+
+			
+			saveModules();
+			break;
+		}
 		
+		
+		default: {
+			logger.warn(this.getClass().getCanonicalName() + " -> NOTIFIED BUT NOT USE -> "
+					+ stringFilterResult.getRawStringMessage());
+
+		}
+		}
 	}
 
 }

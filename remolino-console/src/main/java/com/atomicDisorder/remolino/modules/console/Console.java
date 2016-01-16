@@ -10,44 +10,47 @@ import com.atomicDisorder.remolino.commons.filters.StringFilterResult;
 import com.atomicDisorder.remolino.commons.messages.RawMessage;
 import com.atomicDisorder.remolino.commons.messages.StringHub;
 import com.atomicDisorder.remolino.commons.modules.ModuleClientAbstract;
+import com.atomicDisorder.remolino.commons.modules.ModuleStringHubClientAbstract;
 
+public class Console extends ModuleStringHubClientAbstract implements Runnable
+{
 
+	/*
+	 * public Console(ModuleController moduleController) {
+	 * super(moduleController); }
+	 */
 
-public class Console extends ModuleClientAbstract implements Runnable {
-
-
-/*	public Console(ModuleController moduleController) {
-		super(moduleController);
-	}*/
-	private StringHub stringHub;
-	
 	public Console() {
 	}
 
 	private Logger logger = Logger.getLogger(Console.class.getName());
 	public boolean close;
+	private Scanner scanner;
 
-	public void run() {
-		System.out.println("RUUUUUUUUUUUUUUUUUUUUNINNNNNNNNNNNNNNNGGG " + this.getName());
-		Scanner scanner = new Scanner(System.in);
-		while (!Thread.currentThread().isInterrupted()) {
-			System.out.print("$: ");
-			String consoleInput = scanner.nextLine();
-			
-			//RawMessage newMessage = new RawMessage(this, "consoleCommand:" + consoleInput);
-			if (getStringHub()!=null)
-			{
-				getStringHub().addStringMessage("consoleCommand:" + consoleInput);
-			}
-			else
-			{
-				logger.warn("NO HUB TO GET THIS MESSAGE: " + consoleInput);
-			}
-//			getModuleController().addMessageToQueue(newMessage);
-		}
+	public void shutdownModule() {
 		scanner.close();
 
 	}
+
+	public void checkForNewMessage() {
+	//	System.out.println("DELETE 1");
+		String consoleInput = scanner.nextLine();
+		//System.out.print("consoleInput:" + consoleInput);
+		// RawMessage newMessage = new RawMessage(this, "consoleCommand:" +
+		// consoleInput);
+	//	System.out.println("DELETE 2");
+		if (getStringHub() != null) {
+	//		System.out.println("DELETE 3");
+			getStringHub().addStringMessage("console-command:" + consoleInput);
+		} else {
+	//		System.out.println("DELETE 4");
+			logger.warn("NO HUB TO GET THIS MESSAGE: " + consoleInput);
+		}
+	//	System.out.println("DELETE 5");
+		// getModuleController().addMessageToQueue(newMessage);
+		
+	}
+
 
 	public void saveAllModuleData() {
 		// TODO Auto-generated method stub
@@ -70,8 +73,11 @@ public class Console extends ModuleClientAbstract implements Runnable {
 	}
 
 	public void initModule() {
-		// TODO Auto-generated method stub
-
+		scanner = new Scanner(System.in);
+		
+		 this.setModuleThread(new Thread((Runnable) this));
+		 this.getModuleThread().start();
+		 
 	}
 
 	public ArrayList<String> getFiltersToListen() {
@@ -79,18 +85,22 @@ public class Console extends ModuleClientAbstract implements Runnable {
 		return null;
 	}
 
-	
 	public void saveModuleData() {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void execute() {
+		
 		
 	}
 
-	public StringHub getStringHub() {
-		return stringHub;
-	}
-
-	public void setStringHub(StringHub stringHub) {
-		this.stringHub = stringHub;
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		checkForNewMessage();
+		
 	}
 
 }

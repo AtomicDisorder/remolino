@@ -60,7 +60,7 @@ public class Configurations {
 				getInvalidParameters().put("PARAMETER KEY AND VALUE MISSING NEAR", "");
 				continue;
 			}
-			System.out.println(splitedParameter.length);
+		//	System.out.println(splitedParameter.length);
 			if (splitedParameter.length == 1) {
 				getInvalidParameters().put("PARAMETER VALUE MISSING FOR PARAMETER KEY", splitedParameter[0].trim());
 				continue;

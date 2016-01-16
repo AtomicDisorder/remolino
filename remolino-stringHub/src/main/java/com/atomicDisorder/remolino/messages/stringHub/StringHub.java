@@ -54,45 +54,54 @@ public class StringHub extends HubAbstract implements com.atomicDisorder.remolin
 		this.stringFilters = stringsFilters;
 	}
 
+	public void execute()
+	{
+
+		if (!getStringMessages().isEmpty()) {
+			String firstMessageToProcess = getStringMessages().removeFirst();
+			//logger.debug("Processing -> " + firstMessageToProcess + " -> " + getStringsFilters().size());
+			
+			
+			for (StringFilter stringFilter : getStringsFilters())
+			{
+				
+				if (stringFilter.apply(firstMessageToProcess))
+				{
+					logger.debug(stringFilter.getFilterCanonicalName() + " -> MATCH -> " + firstMessageToProcess);
+					break;
+				}
+				else
+				{
+					logger.debug(stringFilter.getFilterCanonicalName() + " -> NO ONE MATCH -> " + firstMessageToProcess);
+				}
+					
+			}	
+		}
+	}
+	
 	@Override
 	public void run() {
 		while (!Thread.currentThread().isInterrupted()) {
 
 			if (!getStringMessages().isEmpty()) {
 				String firstMessageToProcess = getStringMessages().removeFirst();
-				logger.warn("PROCESSINGGGG: " + firstMessageToProcess + "  " + getStringsFilters().size());
+				//logger.debug("Processing -> " + firstMessageToProcess + " -> " + getStringsFilters().size());
 				
 				
 				for (StringFilter stringFilter : getStringsFilters())
 				{
-					logger.debug(stringFilter.getFilterCanonicalName() + " against -> " + firstMessageToProcess);
+					
 					if (stringFilter.apply(firstMessageToProcess))
 					{
-						logger.info(stringFilter.getFilterCanonicalName() + " match -> " + firstMessageToProcess);
+						logger.debug(stringFilter.getFilterCanonicalName() + " -> MATCH -> " + firstMessageToProcess);
 						break;
 					}
-				}
-				
-				
-				/*f
-				 * Iterator iterator = getModulesMessageFilters().entrySet().iterator();
-				while (iterator.hasNext()) {
-					Map.Entry pair = (Map.Entry) iterator.next();
-					MessageFilter messageFilter = (MessageFilter) pair.getValue();
-					if (messageFilter.apply(rawMessage)) {
-
-						if (recoveringFlag) {
-							LoggerInterno.log(0, "Message RECOVERED: " + rawMessage);
-						}
-						recoveringMessage = "";
-						recoveringFlag = false;
-						return true;
+					else
+					{
+						logger.debug(stringFilter.getFilterCanonicalName() + " -> NO ONE MATCH -> " + firstMessageToProcess);
 					}
-				}*/
-				
-				
-				
-				
+						
+				}	
 			}
 
 		}
