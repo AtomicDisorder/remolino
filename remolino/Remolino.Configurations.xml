@@ -14,7 +14,7 @@
             <key>remolino-telnet-connector</key>
             <value>
                 <completePathToJar>remolino-telnet-connector.jar</completePathToJar>
-                <completePathToMainClass>com.atomicDisorder.remolino.modules.telnetConnector.TelnetConnector</completePathToMainClass>
+                <completePathToMainClass>com.atomicDisorder.remolino.modules.telnetConnector.TelnetConnector2</completePathToMainClass>
                 <moduleType>Client</moduleType>
                 <name>remolino-telnet-connector</name>
             </value>
