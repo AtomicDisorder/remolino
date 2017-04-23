@@ -25,6 +25,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/remolino-console"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/remolino-commons"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/remolino-stringHub"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/remolino-telnet-connector"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/remolino-telnetConnector"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/remolino-sdtdBasics"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/remolino-objectHub"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -11,12 +11,13 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import com.atomicDisorder.remolino.commons.filters.StringFilter;
-import com.atomicDisorder.remolino.commons.filters.StringFilterObserver;
-import com.atomicDisorder.remolino.commons.filters.StringFilterResult;
+import com.atomicDisorder.remolino.commons.filters.StringHubFilter;
+import com.atomicDisorder.remolino.commons.filters.StringHubFilterResult;
+import com.atomicDisorder.remolino.commons.messages.ObjectHub;
 import com.atomicDisorder.remolino.commons.messages.StringHub;
-import com.atomicDisorder.remolino.commons.messages.StringHubClient;
+import com.atomicDisorder.remolino.commons.messages.StringHubMessageProsumer;
 import com.atomicDisorder.remolino.commons.modules.Module;
+import com.atomicDisorder.remolino.commons.modules.ModuleAbstract;
 import com.atomicDisorder.remolino.commons.modules.ModuleConfiguration;
 import com.atomicDisorder.remolino.commons.persistance.JAXBProvider;
 import com.atomicDisorder.remolino.commons.utils.Configurations;
@@ -26,7 +27,7 @@ import com.atomicDisorder.remolino.commons.utils.Reflexion;
  * @author Mariano Blua
  *
  */
-public class Remolino implements StringFilterObserver {
+public class Remolino extends ModuleAbstract {
 
 	private static Configurations configurations;
 	private static HashMap<String, Module> modules;
@@ -39,14 +40,19 @@ public class Remolino implements StringFilterObserver {
 
 		// Load /Create StringHubs
 		// Deberían ser multiples y creables desde la configuracion.
-		StringHub mainStringHub = new com.atomicDisorder.remolino.messages.stringHub.StringHub("main");
+		StringHub mainStringHub = new com.atomicDisorder.remolino.messages.stringHub.StringHub("mainStringHub");
+		ObjectHub mainObjectHub = new com.atomicDisorder.remolino.messages.objectHub.ObjectHub("mainObjectHub");
 
-		// List and Create all modulesConfigurations
+		//Add Remolino as a Module
+		getModules().put("remolino", this);
+		
+		// List and Create all modulesConfigurations				
 		logger.info("*** Loading Configured Modules ***");
 		for (Entry<String, ModuleConfiguration> element : getConfigurations().getModulesConfiguration().entrySet()) {
 			logger.info("* Loading " + element.getKey() + " Module. Type: " + element.getValue().getModuleType());
 			Module newModuleInstance = Reflexion.getModuleInstance(element.getValue());
 			newModuleInstance.setStringHub(mainStringHub);
+			newModuleInstance.setObjectHub(mainObjectHub);
 			if (newModuleInstance != null) {
 				getModules().put(element.getKey(), newModuleInstance);
 				logger.info("Correctly added.");
@@ -54,6 +60,31 @@ public class Remolino implements StringFilterObserver {
 
 		}
 		
+		// Init all filters modules
+		logger.info("*** Init filters from modules ***");
+		for (Entry<String, Module> element : getModules().entrySet()) {
+			Module currentModule = element.getValue();
+			currentModule.initModuleFilters();
+			logger.info(currentModule.getClass().getCanonicalName() + " -> Init module");	
+		}
+		
+		// Get all modules String Filters
+		logger.info("*** Get all modules String Filters ***");
+		for (Entry<String, Module> element : getModules().entrySet()) {
+			Module currentModule = element.getValue();
+			mainStringHub.addStringFiltersAll(currentModule.getOwnFilters());
+			logger.info(currentModule.getClass().getCanonicalName() + " -> Init module");	
+		}
+		
+		// Get all Object String Filters
+		logger.info("*** Get all modules Object Filters ***");
+		for (Entry<String, Module> element : getModules().entrySet()) {
+			Module currentModule = element.getValue();
+			mainStringHub.addStringFiltersAll(currentModule.getOwnFilters());
+			logger.info(currentModule.getClass().getCanonicalName() + " -> Init module");	
+		}
+		
+
 		// Init all modules
 		logger.info("*** Init all modules ***");
 		for (Entry<String, Module> element : getModules().entrySet()) {
@@ -62,8 +93,6 @@ public class Remolino implements StringFilterObserver {
 			logger.info(currentModule.getClass().getCanonicalName() + " -> Init module");	
 		}
 		
-		
-
 		// List and Create all modulesConfigurations
 /*		logger.info("*** Running all runnables modules ***");
 		for (Entry<String, Module> element : getModules().entrySet()) {
@@ -78,8 +107,9 @@ public class Remolino implements StringFilterObserver {
 		}*/
 
 		// Add Remolino basic Filters to mainhub
-		mainStringHub.addStringFilter(RemolinoCommandFilter.getInstance());
-		RemolinoCommandFilter.getInstance().addObserver(this);
+		setStringHub(mainStringHub);
+
+		
 
 		// Starting all Hubs
 		
@@ -246,10 +276,6 @@ public class Remolino implements StringFilterObserver {
 		return modules;
 	}
 
-	private static void setModules(HashMap<String, Module> modules) {
-		Remolino.modules = modules;
-	}
-
 	public static boolean saveAllModulesData() {
 		logger.info("******* Saving Modules *******");
 		java.util.Iterator<Entry<String, Module>> iterator = getModules().entrySet().iterator();
@@ -265,8 +291,8 @@ public class Remolino implements StringFilterObserver {
 	}
 
 	@Override
-	public void notify(StringFilterResult stringFilterResult) {
-		logger.info("*** notify ");
+	public void notify(StringHubFilterResult stringFilterResult) {
+		logger.info("*** notify Remolino");
 		switch (stringFilterResult.getRawStringMessage().toLowerCase()) {
 		case "console-command:rm shutdown": {
 			logger.info("*** Remolino shutting down modules normally");
@@ -290,6 +316,40 @@ public class Remolino implements StringFilterObserver {
 
 		}
 		}
+	}
+
+	
+	
+
+
+
+	@Override
+	public void initModule() {
+		
+	}
+
+	@Override
+	public void shutdownModule() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void saveModuleData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initModuleFilters() {
+		getOwnFilters().add(RemolinoCommandFilter.getInstance());
+		RemolinoCommandFilter.getInstance().addObserver(this);	
 	}
 
 }

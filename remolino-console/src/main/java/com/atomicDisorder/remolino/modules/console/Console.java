@@ -4,18 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import org.apache.log4j.Logger;
 
-import com.atomicDisorder.remolino.commons.filters.StringFilterAbstract;
-import com.atomicDisorder.remolino.commons.filters.StringFilterResult;
-import com.atomicDisorder.remolino.commons.messages.RawMessage;
-import com.atomicDisorder.remolino.commons.messages.StringHub;
-import com.atomicDisorder.remolino.commons.modules.ModuleClientAbstract;
-import com.atomicDisorder.remolino.commons.modules.ModuleStringHubClientAbstract;
+import com.atomicDisorder.remolino.commons.filters.StringHubFilter;
+import com.atomicDisorder.remolino.commons.filters.StringHubFilterAbstract;
+import com.atomicDisorder.remolino.commons.filters.StringHubFilterResult;
+import com.atomicDisorder.remolino.commons.modules.ModuleAbstract;
 
-public class Console extends ModuleStringHubClientAbstract implements Runnable {
+
+
+public class Console extends ModuleAbstract implements Runnable {
 
 	/*
 	 * public Console(ModuleController moduleController) {
@@ -35,8 +33,8 @@ public class Console extends ModuleStringHubClientAbstract implements Runnable {
 		this.getModuleThread().interrupt();
 	}
 
-	public void checkForNewMessage() {
-		logger.debug("checkForNewMessage");
+	public void checkForStringHubMessages() {
+		//logger.debug("checkForStringHubMessages");
 		String consoleInput = "";
 		try {
 			consoleInput = br.readLine();
@@ -61,17 +59,17 @@ public class Console extends ModuleStringHubClientAbstract implements Runnable {
 
 	}
 
-	public ArrayList<StringFilterAbstract> getFilters() {
+	public ArrayList<StringHubFilterAbstract> getFilters() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void setFilters(ArrayList<StringFilterAbstract> messageFilters) {
+	public void setFilters(ArrayList<StringHubFilterAbstract> messageFilters) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public void notify(StringFilterResult messageObject) {
+	public void notify(StringHubFilterResult messageObject) {
 		// TODO Auto-generated method stub
 
 	}
@@ -105,9 +103,17 @@ public class Console extends ModuleStringHubClientAbstract implements Runnable {
 		// TODO Auto-generated method stub
 		while(true)
 		{
-		checkForNewMessage();
+		checkForStringHubMessages();
 		}
 
 	}
+
+	@Override
+	public void initModuleFilters() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }

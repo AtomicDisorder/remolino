@@ -21,6 +21,7 @@ public class Reflexion {
 	private static Logger logger = Logger.getLogger(Reflexion.class.getName());
 	private static JarClassLoader jcl = new JarClassLoader();
 	
+	@SuppressWarnings("null")
 	public static Module getModuleInstance(ModuleConfiguration moduleConfiguration)
 	{
 		Module newModule = null;
@@ -29,8 +30,8 @@ public class Reflexion {
 		//	if (!this.getClass().getCanonicalName().equals(module.getCompletePathToMainClass())) {
 				// IF CLASS IS NOT IN A ASSOCIATED PROJECT, ITS LOADED FROM
 				// JAR.
-				Class newClass = Class.forName(moduleConfiguration.getCompletePathToMainClass());
-				Constructor constructor;
+				Class<?> newClass = Class.forName(moduleConfiguration.getCompletePathToMainClass());
+				Constructor<?> constructor;
 		/*		if (moduleConfiguration.getModuleType().equals(ModuleConfiguration.ModuleTypes.Controller)) {
 					constructor = newClass.getConstructor();
 					newModule = (Module) constructor.newInstance();
@@ -57,11 +58,10 @@ public class Reflexion {
 				jcl.add(moduleConfiguration.getCompletePathToMainClass());
 				newModule = getModuleInstanceFromJAR(moduleConfiguration);
 				if (newModule == null) {
-					if (newModule == null) {
-						logger.info(newModule.getName()
+						logger.error(moduleConfiguration.getName()
 								+ " missing. Disable it or check module configuration data. Execution aborted.");
 						System.exit(1);
-					}
+					
 				}
 				logger.info(moduleConfiguration.getName() + " created from JAR File.");
 				return newModule;
@@ -120,7 +120,8 @@ public class Reflexion {
 			return null;
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+		//	e.printStackTrace();
+			logger.info(moduleConfiguration.getCompletePathToJar() + " was not found.");
 			return null;
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block

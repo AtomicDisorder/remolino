@@ -11,12 +11,21 @@
             </value>
         </entry>
         <entry>
-            <key>remolino-telnet-connector</key>
+            <key>remolino-sdtdBasics</key>
             <value>
-                <completePathToJar>remolino-telnet-connector.jar</completePathToJar>
-                <completePathToMainClass>com.atomicDisorder.remolino.modules.telnetConnector.TelnetConnector2</completePathToMainClass>
+                <completePathToJar>remolino-sdtdBasics.jar</completePathToJar>
+                <completePathToMainClass>com.atomicDisorder.remolino.modules.sdtdBasics.SdtdBasics</completePathToMainClass>
                 <moduleType>Client</moduleType>
-                <name>remolino-telnet-connector</name>
+                <name>remolino-sdtdBasics</name>
+            </value>
+        </entry>
+        <entry>
+            <key>remolino-telnetConnector</key>
+            <value>
+                <completePathToJar>remolino-telnetConnector.jar</completePathToJar>
+                <completePathToMainClass>com.atomicDisorder.remolino.modules.telnetConnector.TelnetConnector</completePathToMainClass>
+                <moduleType>Client</moduleType>
+                <name>remolino-telnetConnector</name>
             </value>
         </entry>
     </modulesConfiguration>

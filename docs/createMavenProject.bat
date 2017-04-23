@@ -1,0 +1,7 @@
+rem call mvn archetype:generate -DgroupId=com.atomicDisorder.remolino -DartifactId=remolino -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false > mvn.log
+rem call mvn archetype:generate -DgroupId=com.atomicDisorder.remolino.modules -DartifactId=remolino-console -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false >> mvn.log
+rem call mvn archetype:generate -DgroupId=com.atomicDisorder.remolino.modules -DartifactId=remolino-telnet-connector -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false >> mvn.log
+rem call mvn archetype:generate -DgroupId=com.atomicDisorder.remolino.modules -DartifactId=remolino-controller -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false >> mvn.log
+rem call mvn archetype:generate -DgroupId=com.atomicDisorder.remolino.messages.stringHub -DartifactId=remolino-stringHub -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false > mvn.log
+rem call mvn archetype:generate -DgroupId=com.atomicDisorder.remolino.modules -DartifactId=remolino-7dtdBasics -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false > mvn.log
+call mvn archetype:generate -DgroupId=com.atomicDisorder.remolino.messages.objectHub -DartifactId=remolino-objectHub -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false > mvn.log

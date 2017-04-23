@@ -55,7 +55,7 @@ public class JAXBProvider {
 		marshalClassToFile(objectToMarshal, null);
 	}
 
-	public static Object unmarshalFromFileOrCreate(Class classToUnmarshal, String fileNameWithExtension) {
+	public static Object unmarshalFromFileOrCreate(Class<?> classToUnmarshal, String fileNameWithExtension) {
 		File file = null;
 
 		file = new File(".//" + fileNameWithExtension);
@@ -77,9 +77,9 @@ public class JAXBProvider {
 		}
 	}
 
-	private static Object createNewInstance(Class classToBuildInstance) {
+	private static Object createNewInstance(Class<?> classToBuildInstance) {
 		try {
-			Constructor constructor = classToBuildInstance.getConstructor();
+			Constructor<?> constructor = classToBuildInstance.getConstructor();
 
 			return (Object) constructor.newInstance();
 

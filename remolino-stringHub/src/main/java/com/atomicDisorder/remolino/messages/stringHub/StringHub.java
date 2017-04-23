@@ -2,16 +2,14 @@ package com.atomicDisorder.remolino.messages.stringHub;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Scanner;
-
 import org.apache.log4j.Logger;
 
-import com.atomicDisorder.remolino.commons.filters.StringFilter;
+import com.atomicDisorder.remolino.commons.filters.StringHubFilter;
 import com.atomicDisorder.remolino.commons.messages.HubAbstract;
 
 public class StringHub extends HubAbstract implements com.atomicDisorder.remolino.commons.messages.StringHub, Runnable {
 	private LinkedList<String> stringMessages;
-	private ArrayList<StringFilter> stringFilters;
+	private ArrayList<StringHubFilter> stringFilters;
 	private Logger logger = Logger.getLogger(StringHub.class.getName());
 
 	public StringHub(String name) {
@@ -25,10 +23,6 @@ public class StringHub extends HubAbstract implements com.atomicDisorder.remolin
 		return stringMessages;
 	}
 
-	private void setStringMessages(LinkedList<String> stringMessages) {
-		this.stringMessages = stringMessages;
-	}
-
 	@Override
 	public void addStringMessage(String stringMessage) {
 		getStringMessages().addLast(stringMessage);
@@ -38,20 +32,16 @@ public class StringHub extends HubAbstract implements com.atomicDisorder.remolin
 	}
 
 	@Override
-	public void addStringFilter(StringFilter stringFilter) {
+	public void addStringFilter(StringHubFilter stringFilter) {
 		getStringsFilters().add(stringFilter);
 
 	}
 
-	private ArrayList<StringFilter> getStringsFilters() {
+	private ArrayList<StringHubFilter> getStringsFilters() {
 		if (stringFilters == null) {
 			stringFilters = new ArrayList<>();
 		}
 		return stringFilters;
-	}
-
-	private void setStringsFilters(ArrayList<StringFilter> stringsFilters) {
-		this.stringFilters = stringsFilters;
 	}
 
 	public void execute()
@@ -59,10 +49,10 @@ public class StringHub extends HubAbstract implements com.atomicDisorder.remolin
 
 		if (!getStringMessages().isEmpty()) {
 			String firstMessageToProcess = getStringMessages().removeFirst();
-			//logger.debug("Processing -> " + firstMessageToProcess + " -> " + getStringsFilters().size());
+			logger.debug("Processing -> " + firstMessageToProcess + " -> " + getStringsFilters().size());
 			
 			
-			for (StringFilter stringFilter : getStringsFilters())
+			for (StringHubFilter stringFilter : getStringsFilters())
 			{
 				
 				if (stringFilter.apply(firstMessageToProcess))
@@ -88,7 +78,7 @@ public class StringHub extends HubAbstract implements com.atomicDisorder.remolin
 				//logger.debug("Processing -> " + firstMessageToProcess + " -> " + getStringsFilters().size());
 				
 				
-				for (StringFilter stringFilter : getStringsFilters())
+				for (StringHubFilter stringFilter : getStringsFilters())
 				{
 					
 					if (stringFilter.apply(firstMessageToProcess))
@@ -106,6 +96,13 @@ public class StringHub extends HubAbstract implements com.atomicDisorder.remolin
 
 		}
 
+	}
+
+	@Override
+	public void addStringFiltersAll(ArrayList<StringHubFilter> stringFiltersAll) {
+		getStringsFilters().addAll(stringFiltersAll);
+
+		
 	}
 	
 	

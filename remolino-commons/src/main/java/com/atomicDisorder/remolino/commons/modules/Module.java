@@ -2,9 +2,10 @@ package com.atomicDisorder.remolino.commons.modules;
 
 import java.util.ArrayList;
 
-import com.atomicDisorder.remolino.commons.filters.StringFilterAbstract;
+import com.atomicDisorder.remolino.commons.filters.StringHubFilter;
+import com.atomicDisorder.remolino.commons.messages.ObjectHub;
 import com.atomicDisorder.remolino.commons.messages.StringHub;
-import com.atomicDisorder.remolino.commons.filters.StringFilterResult;
+import com.atomicDisorder.remolino.commons.filters.StringHubFilterResult;
 
 
 
@@ -14,9 +15,10 @@ import com.atomicDisorder.remolino.commons.filters.StringFilterResult;
  */
 public interface Module {
 	
-	public ArrayList<StringFilterAbstract> getOwnFilters();
-	public void setOwnFilters(ArrayList<StringFilterAbstract> filters);
-	public void notify(StringFilterResult messageObject);
+	public ArrayList<StringHubFilter> getOwnFilters();
+	public void setOwnFilters(ArrayList<StringHubFilter> filters);
+	public void notify(StringHubFilterResult messageObject);
+	public void initModuleFilters();
 	public void initModule();
 	public void shutdownModule();
 	
@@ -26,6 +28,7 @@ public interface Module {
 	public String getName();
 	public ArrayList<String> getFiltersNameToListen() ;
 	public void setStringHub(StringHub stringHub);
+	public void setObjectHub(ObjectHub objectHub);
 	public void execute();
 
 	

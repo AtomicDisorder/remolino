@@ -1,9 +1,8 @@
 package com.atomicDisorder.remolino;
 
-import com.atomicDisorder.remolino.commons.filters.StringFilterResultAbstract;
-import com.atomicDisorder.remolino.commons.filters.StringFilterAbstract;
+import com.atomicDisorder.remolino.commons.filters.StringHubFilterResultAbstract;
 
-public class RemolinoCommandFilterResult extends StringFilterResultAbstract {
+public class RemolinoCommandFilterResult extends StringHubFilterResultAbstract {
 
 	public RemolinoCommandFilterResult(String stringMessage) {
 			super(stringMessage);

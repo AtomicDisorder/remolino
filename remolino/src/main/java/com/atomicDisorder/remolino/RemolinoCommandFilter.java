@@ -1,12 +1,8 @@
 package com.atomicDisorder.remolino;
 
-import java.util.ArrayList;
+import com.atomicDisorder.remolino.commons.filters.StringHubFilterAbstract;
 
-import com.atomicDisorder.remolino.commons.filters.StringFilterAbstract;
-import com.atomicDisorder.remolino.commons.filters.StringFilterObserver;
-import com.atomicDisorder.remolino.commons.modules.Module;
-
-public class RemolinoCommandFilter extends StringFilterAbstract {
+public class RemolinoCommandFilter extends StringHubFilterAbstract {
 
 	
 	private static RemolinoCommandFilter instance;

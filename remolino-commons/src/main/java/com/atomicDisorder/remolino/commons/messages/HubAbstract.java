@@ -13,10 +13,6 @@ public abstract class HubAbstract implements Hub {
 		return name;
 	}
 
-	private void setName(String name) {
-		this.name = name;
-	}
-	
 	public Thread getThread() {
 		return thread;
 	}

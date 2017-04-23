@@ -3,14 +3,8 @@
  */
 package com.atomicDisorder.remolino.commons.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.TreeMap;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import java.util.Map.Entry;
@@ -18,7 +12,6 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
-import com.atomicDisorder.remolino.commons.modules.Module;
 import com.atomicDisorder.remolino.commons.modules.ModuleConfiguration;
 
 
@@ -132,14 +125,6 @@ public class Configurations {
 	 */
 	private Properties getInvalidParameters() {
 		return invalidParameters;
-	}
-
-	/**
-	 * @param invalidParameters
-	 *            the invalidParameters to set
-	 */
-	private void setInvalidParameters(Properties invalidParameters) {
-		this.invalidParameters = invalidParameters;
 	}
 
 	public HashMap<String, ModuleConfiguration> getModulesConfiguration() {
