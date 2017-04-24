@@ -35,7 +35,7 @@ public class ObjectHub extends HubAbstract implements com.atomicDisorder.remolin
 
 		if (!getObjectMessages().isEmpty()) {
 			Object firstMessageToProcess = getObjectMessages().removeFirst();
-			logger.debug("Processing -> " + firstMessageToProcess + " -> " + getObjectFilters().size());
+			logger.debug("Processing -> " + firstMessageToProcess + " -> getObjectFilters().size()=" + getObjectFilters().size());
 			
 			
 			for (ObjectHubFilter objectFilter : getObjectFilters())
@@ -61,7 +61,7 @@ public class ObjectHub extends HubAbstract implements com.atomicDisorder.remolin
 
 			if (!getObjectMessages().isEmpty()) {
 				Object firstMessageToProcess = getObjectMessages().removeFirst();
-				logger.debug("Processing -> " + firstMessageToProcess + " -> " + getObjectFilters().size());
+				logger.debug("Processing -> " + firstMessageToProcess + " ->getObjectFilters().size()=" + getObjectFilters().size());
 				
 				
 				for (ObjectHubFilter objectFilter : getObjectFilters())

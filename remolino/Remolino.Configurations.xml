@@ -11,21 +11,21 @@
             </value>
         </entry>
         <entry>
+            <key>remolino-windowsCommandLine</key>
+            <value>
+                <completePathToJar>remolino-windowsCommandLine.jar</completePathToJar>
+                <completePathToMainClass>com.atomicDisorder.remolino.modules.windowsCommandLine.WindowsCommandLine</completePathToMainClass>
+                <moduleType>Client</moduleType>
+                <name>remolino-windowsCommandLine</name>
+            </value>
+        </entry>
+        <entry>
             <key>remolino-sdtdBasics</key>
             <value>
                 <completePathToJar>remolino-sdtdBasics.jar</completePathToJar>
                 <completePathToMainClass>com.atomicDisorder.remolino.modules.sdtdBasics.SdtdBasics</completePathToMainClass>
                 <moduleType>Client</moduleType>
                 <name>remolino-sdtdBasics</name>
-            </value>
-        </entry>
-        <entry>
-            <key>remolino-telnetConnector</key>
-            <value>
-                <completePathToJar>remolino-telnetConnector.jar</completePathToJar>
-                <completePathToMainClass>com.atomicDisorder.remolino.modules.telnetConnector.TelnetConnector</completePathToMainClass>
-                <moduleType>Client</moduleType>
-                <name>remolino-telnetConnector</name>
             </value>
         </entry>
     </modulesConfiguration>
