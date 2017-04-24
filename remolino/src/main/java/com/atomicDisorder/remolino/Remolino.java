@@ -21,7 +21,7 @@ import com.atomicDisorder.remolino.commons.modules.ModuleAbstract;
 import com.atomicDisorder.remolino.commons.modules.ModuleConfiguration;
 import com.atomicDisorder.remolino.commons.persistance.JAXBProvider;
 import com.atomicDisorder.remolino.commons.utils.Configurations;
-import com.atomicDisorder.remolino.commons.utils.Reflexion;
+import com.atomicDisorder.remolino.commons.utils.Reflection;
 
 /**
  * @author Mariano Blua
@@ -50,7 +50,7 @@ public class Remolino extends ModuleAbstract {
 		logger.info("*** Loading Configured Modules ***");
 		for (Entry<String, ModuleConfiguration> element : getConfigurations().getModulesConfiguration().entrySet()) {
 			logger.info("* Loading " + element.getKey() + " Module. Type: " + element.getValue().getModuleType());
-			Module newModuleInstance = Reflexion.getModuleInstance(element.getValue());
+			Module newModuleInstance = Reflection.getModuleInstance(element.getValue());
 			newModuleInstance.setStringHub(mainStringHub);
 			newModuleInstance.setObjectHub(mainObjectHub);
 			if (newModuleInstance != null) {

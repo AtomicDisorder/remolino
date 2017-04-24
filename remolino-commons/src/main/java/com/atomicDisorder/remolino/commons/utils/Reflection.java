@@ -16,9 +16,9 @@ import xeus.jcl.JclObjectFactory;
 
 // TODO: CHECK
 // http://mvnrepository.com/artifact/org.slf4j/jcl-over-slf4j/1.7.6
-public class Reflexion {
+public class Reflection {
 
-	private static Logger logger = Logger.getLogger(Reflexion.class.getName());
+	private static Logger logger = Logger.getLogger(Reflection.class.getName());
 	private static JarClassLoader jcl = new JarClassLoader();
 	
 	@SuppressWarnings("null")
