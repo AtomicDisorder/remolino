@@ -39,7 +39,7 @@ public class RunShellCommand {
 		{
 			command = commandForLinux ;
 		}
-		if (System.getProperty("os.name").equalsIgnoreCase("windows"))
+		if (System.getProperty("os.name").toLowerCase().contains("windows"))
 		{
 			command = commandForWindows ;
 		}
