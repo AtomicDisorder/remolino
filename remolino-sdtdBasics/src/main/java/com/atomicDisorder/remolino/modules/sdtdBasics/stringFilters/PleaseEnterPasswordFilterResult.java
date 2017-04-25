@@ -7,10 +7,10 @@ public class PleaseEnterPasswordFilterResult extends StringHubFilterResultAbstra
 	public PleaseEnterPasswordFilterResult(String stringMessage) {
 			super(stringMessage);
 		}
-
+/*
 	@Override
 	public String getFilterResultCanonicalClassName() {
 		return this.getClass().getCanonicalName();
-	}
+	}*/
 
 }

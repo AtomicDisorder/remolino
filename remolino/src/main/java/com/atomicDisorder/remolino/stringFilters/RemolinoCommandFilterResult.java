@@ -1,4 +1,4 @@
-package com.atomicDisorder.remolino;
+package com.atomicDisorder.remolino.stringFilters;
 
 import com.atomicDisorder.remolino.commons.filters.StringHubFilterResultAbstract;
 
@@ -24,10 +24,10 @@ public class RemolinoCommandFilterResult extends StringHubFilterResultAbstract {
 	public void setCommandFragments(String[] commandFragments) {
 		this.commandFragments = commandFragments;
 	}
-
+/*
 	@Override
 	public String getFilterResultCanonicalClassName() {
 		return this.getClass().getCanonicalName();
-	}
+	}*/
 
 }

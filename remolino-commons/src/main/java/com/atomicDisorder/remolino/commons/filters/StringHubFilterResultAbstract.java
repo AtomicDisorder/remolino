@@ -7,10 +7,12 @@ package com.atomicDisorder.remolino.commons.filters;
 public abstract class StringHubFilterResultAbstract  implements StringHubFilterResult{
 
 	private String rawStringMessage;
+	private String[] dataFragments;
 	
 	protected StringHubFilterResultAbstract(String rawStringMessage)
 	{
 		setRawStringMessage(rawStringMessage);
+		parse();
 	}
 	public String getRawStringMessage() {
 		return rawStringMessage;
@@ -20,34 +22,22 @@ public abstract class StringHubFilterResultAbstract  implements StringHubFilterR
 		this.rawStringMessage = rawStringMessage;
 	}
 	
-	
-	/*private RawMessage rawMessage;
-	
-	public FilterResultAbstract(RawMessage rawMessage)
+	private void parse() {
+		String[] dataFragments = getRawStringMessage().trim().split(" ");
+		setDataFragments(dataFragments);
+	}
+
+	public String[] getDataFragments() {
+		return dataFragments;
+	}
+
+	public void setDataFragments(String[] dataFragments) {
+		this.dataFragments = dataFragments;
+	}
+
+	public String getFilterResultCanonicalClassName()
 	{
-		setRawMessage(rawMessage);
+		return this.getClass().getCanonicalName();
 	}
 	
-
-
-	public String getResultObjectClassName() {
-		return this.getClass().getName();
-	}
-
-
-
-	public RawMessage getRawMessage() {
-		return rawMessage;
-	}
-
-
-
-	private void setRawMessage(RawMessage rawMessage) {
-		this.rawMessage = rawMessage;
-	}
-*/
-
-
-
-
 }

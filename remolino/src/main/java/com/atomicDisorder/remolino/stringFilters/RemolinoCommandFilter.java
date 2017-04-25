@@ -1,4 +1,4 @@
-package com.atomicDisorder.remolino;
+package com.atomicDisorder.remolino.stringFilters;
 
 import com.atomicDisorder.remolino.commons.filters.StringHubFilterAbstract;
 

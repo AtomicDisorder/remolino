@@ -28,6 +28,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/remolino-telnetConnector"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/remolino-sdtdBasics"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/remolino-objectHub"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/remolino-windowsCommandLine"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/remolino-shellCommands"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

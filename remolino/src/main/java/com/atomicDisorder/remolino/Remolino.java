@@ -22,6 +22,7 @@ import com.atomicDisorder.remolino.commons.modules.ModuleConfiguration;
 import com.atomicDisorder.remolino.commons.persistance.JAXBProvider;
 import com.atomicDisorder.remolino.commons.utils.Configurations;
 import com.atomicDisorder.remolino.commons.utils.Reflection;
+import com.atomicDisorder.remolino.stringFilters.RemolinoCommandFilter;
 
 /**
  * @author Mariano Blua
@@ -141,12 +142,16 @@ public class Remolino extends ModuleAbstract {
 		for (Entry<String, Module> element : getModules().entrySet()) {
 			Module currentModule = element.getValue();
 			if (currentModule instanceof Runnable) {
-				currentModule.getModuleThread().interrupt();
-				logger.info(currentModule.getClass().getCanonicalName() + " -> Thread interrupted "
+				if (currentModule.getModuleThread()!=null)
+				{
+					logger.info(currentModule.getClass().getCanonicalName() + " -> Thread interrupted "
 						+ currentModule.getModuleThread().getId());
+					currentModule.getModuleThread().interrupt();
+				}
 			}
 		}
 		logger.info("* All modules shutted down");
+		System.exit(0);
 	}
 
 	private void saveModules() {
@@ -292,7 +297,7 @@ public class Remolino extends ModuleAbstract {
 
 	@Override
 	public void notify(StringHubFilterResult stringFilterResult) {
-		logger.info("*** notify Remolino");
+		logger.info("*** notify Remolino: " + stringFilterResult.getClass().getCanonicalName());
 		switch (stringFilterResult.getRawStringMessage().toLowerCase()) {
 		case "console-command:rm shutdown": {
 			logger.info("*** Remolino shutting down modules normally");
@@ -303,8 +308,6 @@ public class Remolino extends ModuleAbstract {
 			break;
 		}
 		case "console-command:rm save": {
-
-			
 			saveModules();
 			break;
 		}

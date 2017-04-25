@@ -5,9 +5,5 @@ package com.atomicDisorder.remolino.commons.filters;
  *
  */
 public interface StringHubFilterResult extends FilterResult {
-	
 	public String getRawStringMessage();
-	
-
-	
 }

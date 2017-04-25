@@ -7,10 +7,10 @@ public class PasswordIncorrectPleaseEnterPasswordFilterResult extends StringHubF
 	public PasswordIncorrectPleaseEnterPasswordFilterResult(String stringMessage) {
 			super(stringMessage);
 		}
-
+/*
 	@Override
 	public String getFilterResultCanonicalClassName() {
 		return this.getClass().getCanonicalName();
-	}
+	}*/
 
 }

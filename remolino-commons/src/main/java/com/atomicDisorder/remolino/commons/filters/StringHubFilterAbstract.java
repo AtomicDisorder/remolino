@@ -23,6 +23,7 @@ public abstract class StringHubFilterAbstract implements StringHubFilter, Compar
 	private ArrayList<StringHubFilterObserver> observers;
 	private String sourceModule;
 	private Logger logger = Logger.getLogger(StringHubFilterAbstract.class.getName());
+	private boolean allowOthersFiltersCheck = false;
 
 	private int occurrences;
 
@@ -68,7 +69,7 @@ public abstract class StringHubFilterAbstract implements StringHubFilter, Compar
 		if (this.getRegexPattern().matcher(stringMessage).matches()) {
 			incrementOccurrences();
 			if (this.isProcessThisMessages()) {
-				StringHubFilterResult newMessageObject = CreateNewMessageObjectClass(this.getFilterCanonicalName()+ "Result", stringMessage);
+				StringHubFilterResult newMessageObject = CreateNewMessageObjectClass(this.getFilterCanonicalName() + "Result", stringMessage);
 				//*if (modulesListeners != null && newMessageObject != null) {
 					for (StringHubFilterObserver observer : getObservers()) {
 						
@@ -144,6 +145,16 @@ public abstract class StringHubFilterAbstract implements StringHubFilter, Compar
 		}
 		return observers;
 	}
+
+	public boolean isAllowOthersFiltersCheck() {
+		return allowOthersFiltersCheck;
+	}
+
+	public void setAllowOthersFiltersCheck(boolean allowOthersFiltersCheck) {
+		this.allowOthersFiltersCheck = allowOthersFiltersCheck;
+	}
+
+
 
 
 }

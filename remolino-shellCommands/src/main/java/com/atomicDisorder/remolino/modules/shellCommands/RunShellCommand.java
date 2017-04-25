@@ -1,4 +1,4 @@
-package com.atomicDisorder.remolino.modules.windowsCommandLine;
+package com.atomicDisorder.remolino.modules.shellCommands;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,13 +6,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-import com.atomicDisorder.remolino.commons.modules.ModuleAbstract;
+import org.apache.log4j.Logger;
 
-public class WindowsConsoleCommand {
+import com.atomicDisorder.remolino.commons.modules.ModuleAbstract;
+import com.atomicDisorder.remolino.commons.utils.Configurations;
+
+public class RunShellCommand {
 
 	private String commandToRun;
+	private Logger logger = Logger.getLogger(Configurations.class.getName());
 
-	public WindowsConsoleCommand() {
+	public RunShellCommand() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -25,13 +29,25 @@ public class WindowsConsoleCommand {
 	}
 
 	public void run() {
-
-		System.out.println("this.getCommandToRun(): " + this.getCommandToRun().trim());
-
 		//String[] command = { "CMD", "/C", "dir" };// FOR WINDOWS MARIANITUS
 		//Process p = Runtime.getRuntime().exec(new String[]{"bash","-c","ls /home/XXX"});//linux
 		//Process p = Runtime.getRuntime().exec(new String[]{"csh","-c","cat /home/narek/pk.txt"});//linux
-		String[] command = {"bash","-c", this.getCommandToRun().trim() }; //
+		String[] command =null;
+		String[] commandForWindows = {"cmd","/c", this.getCommandToRun().trim() } ;
+		String[] commandForLinux = {"bash","-c", this.getCommandToRun().trim() } ;
+		if (System.getProperty("os.name").equalsIgnoreCase("linux"))
+		{
+			command = commandForLinux ;
+		}
+		if (System.getProperty("os.name").equalsIgnoreCase("windows"))
+		{
+			command = commandForWindows ;
+		}
+		if (command==null)
+		{
+			logger.warn("Unknown operating system. " + System.getProperty("os.name") + " not supported... yet");			
+		}
+
 		ProcessBuilder probuilder = new ProcessBuilder(command);
 		// You can set up your work directory
 		// probuilder.directory(new File("c:\\xyzwsdemo"));

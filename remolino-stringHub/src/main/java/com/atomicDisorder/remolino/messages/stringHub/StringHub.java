@@ -58,7 +58,12 @@ public class StringHub extends HubAbstract implements com.atomicDisorder.remolin
 				if (stringFilter.apply(firstMessageToProcess))
 				{
 					logger.debug(stringFilter.getFilterCanonicalName() + " -> MATCH -> " + firstMessageToProcess);
-					break;
+					logger.debug(stringFilter.getFilterCanonicalName() + " -> ALLOW -> " + stringFilter.isAllowOthersFiltersCheck());
+					
+					if (!stringFilter.isAllowOthersFiltersCheck())
+					{
+						break;
+					}
 				}
 				else
 				{
@@ -84,7 +89,12 @@ public class StringHub extends HubAbstract implements com.atomicDisorder.remolin
 					if (stringFilter.apply(firstMessageToProcess))
 					{
 						logger.debug(stringFilter.getFilterCanonicalName() + " -> MATCH -> " + firstMessageToProcess);
-						break;
+						logger.debug(stringFilter.getFilterCanonicalName() + " -> ALLOW -> " + stringFilter.isAllowOthersFiltersCheck());
+						
+						if (!stringFilter.isAllowOthersFiltersCheck())
+						{
+							break;
+						}
 					}
 					else
 					{
